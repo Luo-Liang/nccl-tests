@@ -898,7 +898,7 @@ int main(int argc, char* argv[]) {
       CUDACHECK(cudaHostRegister(procSharedHost, procSharedBytes, cudaHostRegisterPortable | cudaHostRegisterMapped));
       CUDACHECK(cudaHostGetDevicePointer(&procShared, procSharedHost, 0));
   }
-
+  PRINT("# NCCL Tests compiled with NCCL %d.%d\n", NCCL_MAJOR, NCCL_MINOR);
   //if parallel init is not selected, use main thread to initialize NCCL
   ncclComm_t* comms = (ncclComm_t*)malloc(sizeof(ncclComm_t)*nThreads*nGpus);
   if (!parallel_init) {
@@ -915,7 +915,6 @@ int main(int argc, char* argv[]) {
        NCCLCHECK(ncclGroupEnd());
      }
 
-     PRINT("# NCCL Tests compiled with NCCL %d.%d\n", NCCL_MAJOR, NCCL_MINOR);
      PRINT("# Using devices\n");
      for (int p=0; p<nProcs; p++) {
        if (p == proc) {
