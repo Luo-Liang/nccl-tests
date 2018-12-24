@@ -876,6 +876,7 @@ int main(int argc, char* argv[]) {
 #ifdef MPI_SUPPORT
   MPI_Bcast(&ncclId, sizeof(ncclId), MPI_BYTE, 0, MPI_COMM_WORLD);
 #endif
+  PRINT("# NCCL Tests compiled with NCCL %d.%d\n", NCCL_MAJOR, NCCL_MINOR);
   cudaStream_t streams[nGpus*nThreads];
   void* sendbuffs[nGpus*nThreads];
   void* recvbuffs[nGpus*nThreads];
@@ -898,7 +899,7 @@ int main(int argc, char* argv[]) {
       CUDACHECK(cudaHostRegister(procSharedHost, procSharedBytes, cudaHostRegisterPortable | cudaHostRegisterMapped));
       CUDACHECK(cudaHostGetDevicePointer(&procShared, procSharedHost, 0));
   }
-  PRINT("# NCCL Tests compiled with NCCL %d.%d\n", NCCL_MAJOR, NCCL_MINOR);
+
   //if parallel init is not selected, use main thread to initialize NCCL
   ncclComm_t* comms = (ncclComm_t*)malloc(sizeof(ncclComm_t)*nThreads*nGpus);
   if (!parallel_init) {
